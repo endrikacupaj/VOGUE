@@ -1,0 +1,8 @@
+__pycache__
+.vector_cache
+
+# datasets
+data/lcquad
+data/vquanda
+data/paraqa
+data/vanilla
