@@ -159,7 +159,7 @@ class AnswerVerbalizationDataset(object):
                                 batch_first=True)
 
         self.lf_field = Field(init_token=START_TOKEN,
-                                eos_token=END_TOKEN,
+                                eos_token=CTX_TOKEN,
                                 pad_token=PAD_TOKEN,
                                 unk_token=UNK_TOKEN,
                                 lower=True,
