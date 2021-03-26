@@ -9,6 +9,7 @@ import torch
 import random
 import hashlib
 import logging
+import sklearn
 import numpy as np
 import torch.nn as nn
 from pathlib import Path
@@ -60,6 +61,20 @@ class AverageMeter(object):
         self.sum += val * n
         self.count += n
         self.avg = self.sum / self.count
+
+class F1ScoreMeter(object):
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self.y_true = []
+        self.y_pred = []
+        self.f1_score = 0
+
+    def update(self, true, pred):
+        self.y_true.append(true)
+        self.y_pred.append(pred)
+        self.f1_score = sklearn.metrics.f1_score(self.y_true, self.y_pred)
 
 class Predictor(object):
     def __init__(self, model, vocabs, device):
@@ -132,7 +147,7 @@ class Scorer(object):
         self.results = []
         self.bleu_score_meter = AverageMeter()
         self.meteor_score_meter = AverageMeter()
-        self.similarity_threshold_meter = AverageMeter()
+        self.similarity_threshold_meter = F1ScoreMeter()
 
     def _bleu_score(self, reference, hypothesis):
         return nltk.translate.bleu_score.sentence_bleu([reference], hypothesis)
@@ -151,7 +166,6 @@ class Scorer(object):
 
             blue_score = self._bleu_score(reference, hypothesis[DECODER])
             meteor_score = self._meteor_score(reference, hypothesis[DECODER])
-            st_score = 1 if example.similarity_threshold == hypothesis[SIMILARITY_THRESHOLD] else 0
 
             self.results.append({
                 REFERENCE: hypothesis[DECODER],
@@ -174,7 +188,7 @@ class Scorer(object):
                 self.bleu_score_meter.update(blue_score)
                 self.meteor_score_meter.update(meteor_score)
 
-            self.similarity_threshold_meter.update(st_score)
+            self.similarity_threshold_meter.update(int(example.similarity_threshold[0]), int(hypothesis[SIMILARITY_THRESHOLD][0]))
 
         if args.dataset == PARAQA:
             for para_res in seen_examples.values():
@@ -185,7 +199,7 @@ class Scorer(object):
             RESULTS: self.results,
             BLEU_SCORE: self.bleu_score_meter.avg,
             METEOR_SCORE: self.meteor_score_meter.avg,
-            ST_SCORE: self.similarity_threshold_meter.avg
+            ST_SCORE: self.similarity_threshold_meter.f1_score
         }
 
     def reset(self):
