@@ -6,7 +6,7 @@ def get_parser():
     # general
     parser.add_argument('--seed', default=1234, type=int)
     parser.add_argument('--no-cuda', action='store_true')
-    parser.add_argument('--cuda_device', default=1, type=int)
+    parser.add_argument('--cuda_device', default=0, type=int)
 
     # dataset and task
     parser.add_argument('--dataset', default='vquanda', choices=['vquanda', 'paraqa', 'vanilla'], type=str)

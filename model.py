@@ -13,7 +13,7 @@ class HybridAnswerVerbalization(nn.Module):
         self.vocabs = vocabs
         self.question_encoder = Encoder(vocabs[INPUT], DEVICE)
         self.query_encoder = Encoder(vocabs[LOGICAL_FORM], DEVICE)
-        self.decoder = Decoder(vocabs[DECODER], DEVICE)
+        self.decoder = Decoder(vocabs[DECODER], DEVICE, embed_dim=args.emb_dim*2)
         self.similarity_threshold = SimilarityThreshold(len(vocabs[SIMILARITY_THRESHOLD]))
         self.cross_attention = CrossAttention(device=DEVICE)
 
@@ -79,28 +79,27 @@ class CrossAttention(nn.Module):
 
         return Q, K, V
 
-    def attention(self, Q, K_1, K_2, V_1, V_2):
+    def attention(self, input, Q, K_1, K_2, V_1, V_2):
         attention = torch.matmul(torch.matmul(Q, K_1.permute(0, 1, 3, 2)), V_1) + \
                     torch.matmul(torch.matmul(Q, K_2.permute(0, 1, 3, 2)), V_2)
 
         attention = attention.permute(0, 2, 1, 3).contiguous()
         attention = attention.view(Q.shape[0], -1, self.heads * (self.attn_dim))
 
-        return attention
+        x = self.linear_out(attention)
+        x = self.layer_norm(input + self.dropout(x))
+        x = self.layer_norm(x + self.dropout(self.pos_ff(x)))
+
+        return x
 
     def forward(self, question, query):
         Q_1, K_1, V_1 = self.QKV(question)
         Q_2, K_2, V_2 = self.QKV(query)
 
-        question_attn = self.attention(Q_1, K_1, K_2, V_1, V_2)
-        query_attn = self.attention(Q_2, K_2, K_1, V_2, V_1)
+        question_attn = self.attention(question, Q_1, K_1, K_2, V_1, V_2)
+        query_attn = self.attention(query, Q_2, K_2, K_1, V_2, V_1)
 
-        attention = torch.mean(torch.stack([question_attn, query_attn]), dim=0)
-
-        x = self.linear_out(attention)
-
-        x = self.layer_norm(question + self.dropout(x))
-        x = self.layer_norm(x + self.dropout(self.pos_ff(x)))
+        x = torch.cat([question_attn, query_attn], dim=-1)
 
         return x
 
