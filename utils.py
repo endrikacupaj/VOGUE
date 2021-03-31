@@ -168,10 +168,10 @@ class Scorer(object):
             meteor_score = self._meteor_score(reference, hypothesis[DECODER])
 
             self.results.append({
-                REFERENCE: hypothesis[DECODER],
-                HYPOTHESIS: hypothesis,
+                REFERENCE: reference,
+                HYPOTHESIS: hypothesis[DECODER],
                 BLEU_SCORE: blue_score,
-                METEOR_SCORE: blue_score
+                METEOR_SCORE: meteor_score
             })
 
             if args.dataset == PARAQA: # for ParaQA get max values (BLEU, METEOR)
@@ -201,6 +201,14 @@ class Scorer(object):
             METEOR_SCORE: self.meteor_score_meter.avg,
             ST_SCORE: self.similarity_threshold_meter.f1_score
         }
+
+    def write_results(self):
+        save_dict = json.dumps(self.results, indent=4)
+        save_dict_no_space_1 = re.sub(r'": \[\s+', '": [', save_dict)
+        save_dict_no_space_2 = re.sub(r'",\s+', '", ', save_dict_no_space_1)
+        save_dict_no_space_3 = re.sub(r'"\s+\]', '"]', save_dict_no_space_2)
+        with open(f'{ROOT_PATH}/{args.path_results}/{args.dataset}_results.json', 'w', encoding='utf-8') as json_file:
+            json_file.write(save_dict_no_space_3)
 
     def reset(self):
         self.results = []

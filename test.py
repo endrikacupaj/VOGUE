@@ -81,11 +81,13 @@ def main():
     scorer = Scorer()
 
     scorer.data_score(val_data, predictor)
+    scorer.write_results()
     logger.info(f'Similarity Threshold Accuracy: {scorer.similarity_threshold_meter.f1_score}')
     logger.info(f'BLEU score: {scorer.bleu_score_meter.avg}')
     logger.info(f'METEOR score: {scorer.meteor_score_meter.avg}')
 
     scorer.data_score(test_data, predictor)
+    scorer.write_results()
     logger.info(f'Similarity Threshold Accuracy: {scorer.similarity_threshold_meter.f1_score}')
     logger.info(f'BLEU score: {scorer.bleu_score_meter.avg}')
     logger.info(f'METEOR score: {scorer.meteor_score_meter.avg}')
