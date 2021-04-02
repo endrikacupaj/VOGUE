@@ -83,13 +83,19 @@ def main():
     scorer.data_score(val_data, predictor)
     scorer.write_results()
     logger.info(f'Similarity Threshold Accuracy: {scorer.similarity_threshold_meter.f1_score}')
-    logger.info(f'BLEU score: {scorer.bleu_score_meter.avg}')
+    logger.info(f'BLEU-1 score: {scorer.bleu_score_meter["1"].avg}')
+    logger.info(f'BLEU-2 score: {scorer.bleu_score_meter["2"].avg}')
+    logger.info(f'BLEU-3 score: {scorer.bleu_score_meter["3"].avg}')
+    logger.info(f'BLEU-4 score: {scorer.bleu_score_meter["4"].avg}')
     logger.info(f'METEOR score: {scorer.meteor_score_meter.avg}')
 
     scorer.data_score(test_data, predictor)
     scorer.write_results()
     logger.info(f'Similarity Threshold Accuracy: {scorer.similarity_threshold_meter.f1_score}')
-    logger.info(f'BLEU score: {scorer.bleu_score_meter.avg}')
+    logger.info(f'BLEU-1 score: {scorer.bleu_score_meter["1"].avg}')
+    logger.info(f'BLEU-2 score: {scorer.bleu_score_meter["2"].avg}')
+    logger.info(f'BLEU-3 score: {scorer.bleu_score_meter["3"].avg}')
+    logger.info(f'BLEU-4 score: {scorer.bleu_score_meter["4"].avg}')
     logger.info(f'METEOR score: {scorer.meteor_score_meter.avg}')
 
 if __name__ == '__main__':

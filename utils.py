@@ -145,12 +145,22 @@ class Predictor(object):
 class Scorer(object):
     def __init__(self):
         self.results = []
-        self.bleu_score_meter = AverageMeter()
+        self.bleu_score_meter = {
+            '1': AverageMeter(),
+            '2': AverageMeter(),
+            '3': AverageMeter(),
+            '4': AverageMeter()
+        }
         self.meteor_score_meter = AverageMeter()
         self.similarity_threshold_meter = F1ScoreMeter()
 
     def _bleu_score(self, reference, hypothesis):
-        return nltk.translate.bleu_score.sentence_bleu([reference], hypothesis)
+        return {
+            '1': nltk.translate.bleu_score.sentence_bleu([reference], hypothesis, weights=(1.0, 0.0, 0.0, 0.0)),
+            '2': nltk.translate.bleu_score.sentence_bleu([reference], hypothesis, weights=(0.5, 0.5, 0.0, 0.0)),
+            '3': nltk.translate.bleu_score.sentence_bleu([reference], hypothesis, weights=(0.33, 0.33, 0.33, 0.0)),
+            '4': nltk.translate.bleu_score.sentence_bleu([reference], hypothesis, weights=(0.25, 0.25, 0.25, 0.25)),
+        }
 
     def _meteor_score(self, reference, hypothesis):
         return nltk.translate.meteor_score.single_meteor_score(' '.join(reference), ' '.join(hypothesis))
@@ -170,34 +180,58 @@ class Scorer(object):
             self.results.append({
                 REFERENCE: reference,
                 HYPOTHESIS: hypothesis[DECODER],
-                BLEU_SCORE: blue_score,
+                BLEU_SCORE: {
+                    '1': blue_score['1'],
+                    '2': blue_score['2'],
+                    '3': blue_score['3'],
+                    '4': blue_score['4']
+                },
                 METEOR_SCORE: meteor_score
             })
 
             if args.dataset == PARAQA: # for ParaQA get max values (BLEU, METEOR)
                 input_hash = self._hash_text(''.join(example.input) + example.similarity_threshold[0])
                 if input_hash in seen_examples:
-                    seen_examples[input_hash][BLEU_SCORE].append(blue_score)
+                    seen_examples[input_hash][BLEU_SCORE]['1'].append(blue_score['1'])
+                    seen_examples[input_hash][BLEU_SCORE]['2'].append(blue_score['2'])
+                    seen_examples[input_hash][BLEU_SCORE]['3'].append(blue_score['3'])
+                    seen_examples[input_hash][BLEU_SCORE]['4'].append(blue_score['4'])
                     seen_examples[input_hash][METEOR_SCORE].append(meteor_score)
                 else:
                     seen_examples[input_hash] = {
-                        BLEU_SCORE: [blue_score],
+                        BLEU_SCORE: {
+                            '1': [blue_score['1']],
+                            '2': [blue_score['2']],
+                            '3': [blue_score['3']],
+                            '4': [blue_score['4']]
+                        },
                         METEOR_SCORE: [meteor_score]
                     }
             else:
-                self.bleu_score_meter.update(blue_score)
+                self.bleu_score_meter['1'].update(blue_score['1'])
+                self.bleu_score_meter['2'].update(blue_score['2'])
+                self.bleu_score_meter['3'].update(blue_score['3'])
+                self.bleu_score_meter['4'].update(blue_score['4'])
                 self.meteor_score_meter.update(meteor_score)
 
             self.similarity_threshold_meter.update(int(example.similarity_threshold[0]), int(hypothesis[SIMILARITY_THRESHOLD][0]))
 
         if args.dataset == PARAQA:
             for para_res in seen_examples.values():
-                self.bleu_score_meter.update(max(para_res[BLEU_SCORE]))
+                self.bleu_score_meter['1'].update(max(para_res[BLEU_SCORE]['1']))
+                self.bleu_score_meter['2'].update(max(para_res[BLEU_SCORE]['2']))
+                self.bleu_score_meter['3'].update(max(para_res[BLEU_SCORE]['3']))
+                self.bleu_score_meter['4'].update(max(para_res[BLEU_SCORE]['4']))
                 self.meteor_score_meter.update(max(para_res[METEOR_SCORE]))
 
         return {
             RESULTS: self.results,
-            BLEU_SCORE: self.bleu_score_meter.avg,
+            BLEU_SCORE: {
+                    '1': self.bleu_score_meter['1'].avg,
+                    '2': self.bleu_score_meter['2'].avg,
+                    '3': self.bleu_score_meter['3'].avg,
+                    '4': self.bleu_score_meter['4'].avg
+                },
             METEOR_SCORE: self.meteor_score_meter.avg,
             ST_SCORE: self.similarity_threshold_meter.f1_score
         }
