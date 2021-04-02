@@ -11,7 +11,7 @@ parser = get_parser()
 args = parser.parse_args()
 
 # model name
-MODEL_NAME = 'HybridAnswerVerbalization'
+MODEL_NAME = 'VOGUE'
 
 # define device
 CUDA = 'cuda'

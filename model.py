@@ -7,9 +7,9 @@ from torch.autograd import Variable
 # import constants
 from constants import *
 
-class HybridAnswerVerbalization(nn.Module):
+class VOGUE(nn.Module):
     def __init__(self, vocabs):
-        super(HybridAnswerVerbalization, self).__init__()
+        super(VOGUE, self).__init__()
         self.vocabs = vocabs
         self.question_encoder = Encoder(vocabs[INPUT], DEVICE)
         self.query_encoder = Encoder(vocabs[LOGICAL_FORM], DEVICE)

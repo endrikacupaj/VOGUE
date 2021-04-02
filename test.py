@@ -3,9 +3,9 @@ import torch
 import random
 import logging
 import numpy as np
+from model import VOGUE
 from args import get_parser
 from torchtext.data import BucketIterator
-from model import HybridAnswerVerbalization
 from data.dataset import AnswerVerbalizationDataset
 
 from constants import *
@@ -40,7 +40,7 @@ def main():
     _, val_data, test_data = dataset.get_data()
 
     # load model
-    model = HybridAnswerVerbalization(vocabs).to(DEVICE)
+    model = VOGUE(vocabs).to(DEVICE)
 
     # define loss function (criterion)
     criterion = {

@@ -1,7 +1,7 @@
 import argparse
 
 def get_parser():
-    parser = argparse.ArgumentParser(description='Hybrid Answer Verbalization')
+    parser = argparse.ArgumentParser(description='VOGUE: Answer Verbalization through Multi Task Learning')
 
     # general
     parser.add_argument('--seed', default=1234, type=int)
