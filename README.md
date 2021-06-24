@@ -61,4 +61,12 @@ Please consider the [args](args.py) file for specifying the desired checkpoint p
 The repository is under [MIT License](LICENCE).
 
 ## Cite
-Coming Soon!
+```bash
+@inproceedings{
+    kacupaj2021vogue,
+    title={VOGUE: Answer Verbalization through Multi-Task Learning},
+    author={Endri Kacupaj and Shyamnath Premnadh and Kuldeep Singh and Jens Lehmann and Maria Maleshkova},
+    booktitle={Machine Learning and Knowledge Discovery in Databases (ECML PDKK 2021)},
+    year={2021}
+}
+```
