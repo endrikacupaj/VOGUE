@@ -21,8 +21,8 @@ QUERY_DICT = {
 tagger = SequenceTagger.load('ner')
 
 def read_sparql_template_ids():
-    lcquad_data = json.load(open(str(ROOT_PATH) + args.data_path + '/lcquad/train.json'))
-    lcquad_data.extend(json.load(open(str(ROOT_PATH) + args.data_path + '/lcquad/test.json')))
+    lcquad_data = json.load(open(str(ROOT_PATH) + '/data/lcquad/train.json'))
+    lcquad_data.extend(json.load(open(str(ROOT_PATH) + '/data/lcquad/test.json')))
 
     return { data['_id']: data['sparql_template_id'] for data in lcquad_data }
 
@@ -51,7 +51,7 @@ def prepare_query(query, uid, cover_entities=True):
 
     predicates = [
         predicate.replace(',\n', '')
-        for predicate in open(str(ROOT_PATH) + args.data_path + '/predicates.txt').readlines()
+        for predicate in open(str(ROOT_PATH) + '/data/vquanda/predicates.txt').readlines()
     ]
 
     predicate_counter = 1
@@ -179,7 +179,7 @@ def write_data(data, name):
         json.dump(data, f, ensure_ascii=False, indent=4)
 
 if __name__ == "__main__":
-    templates = { temp['id']: temp for temp in json.load(open(str(ROOT_PATH) + args.data_path + '/templates.json')) }
+    templates = { temp['id']: temp for temp in json.load(open(str(ROOT_PATH) + '/data/vquanda/templates.json')) }
     sparql_templates_ids = read_sparql_template_ids()
 
     train_data = json.load(open(f'{str(ROOT_PATH)}/data/vquanda/train.json'))
