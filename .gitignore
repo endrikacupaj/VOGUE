@@ -2,9 +2,14 @@ __pycache__
 .vector_cache
 
 # datasets
-data/lcquad
-data/vquanda
-data/paraqa
-data/vanilla
+data/lcquad/*
+data/vquanda/*
+!data/vquanda/templates.json
+!data/vquanda/predicates.txt
+data/paraqa/*
+!data/paraqa/templates.json
+!data/paraqa/predicates.txt
+data/vanilla/*
+!data/vanilla
 
 experiments

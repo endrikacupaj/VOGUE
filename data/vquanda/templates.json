@@ -1,0 +1,518 @@
+[
+    {
+        "id": 1,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT ?uri WHERE {?uri <%(e_to_e_out)s> <%(e_out)s> } ",
+        "logical_form": "find_reverse ent pred1",
+        "negetive_forms": [303, 402],
+        "answer_template": [
+        "The pred1 of ans is ent",
+        "ans has pred1 as ent",
+        "ent is the pred1 of ans"],
+        "type": "vanilla"
+    },
+    {
+        "id": 301,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT ?uri WHERE {?uri <%(e_to_e_out)s> <%(e_out)s> . ?uri rdf:type class } ",
+        "logical_form": "filter_type find_reverse ent pred1 class",
+        "negetive_forms": [151, 408],
+        "answer_template": [
+        "The type whose pred1 is ent is ans",
+        "ans is the type whose pred1 is ent",
+        "ent is the pred1 of type ans"],
+        "type": "vanilla"
+    },
+    {
+        "id": 2,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT ?uri WHERE { <%(e_in)s> <%(e_in_to_e)s> ?uri } ",
+        "logical_form": "find ent pred1",
+        "negetive_forms": [111, 107],
+        "answer_template": [
+        "The pred1 of ent is ans",
+        "ans is the pred1 of ent"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 302,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT ?uri WHERE { <%(e_in)s> <%(e_in_to_e)s> ?uri } . ?uri rdf:type class ",
+        "logical_form": "filter_type find ent pred1 class",
+        "negetive_forms": [108, 406],
+        "answer_template": [
+        "The type which is the pred1 of ent is ans",
+        "ans is the type which is the pred1 of ent"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 3,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT ?uri WHERE { <%(e_in_in)s> <%(e_in_in_to_e_in)s> ?x . ?x <%(e_in_to_e)s> ?uri . ?x rdf:type class} ",
+        "logical_form": "find find ent pred1 pred2",
+        "negetive_forms": [105, 103],
+        "answer_template": [
+        "The pred2 of the pred1 of ent is ans",
+        "The pred1 of ent has ans as pred2",
+        "ans is the pred2 of the pred1 of ent"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 303,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT ?uri WHERE { <%(e_in_in)s> <%(e_in_in_to_e_in)s> ?x . ?x <%(e_in_to_e)s> ?uri } ",
+        "logical_form": "find filter_type find ent pred1 class pred2",
+        "negetive_forms": [403, 405],
+        "answer_template": [
+        "The pred2 of the type who is pred1 of ent is ans",
+        "ans is the pred2 of the type which is the pred1 of ent",
+        "The type which is the pred1 of ent has pred2 as ans"],
+        "type": "vanilla"
+    },
+    {
+        "id": 5,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT ?uri WHERE { ?x <%(e_in_to_e_in_out)s> <%(e_in_out)s> . ?x <%(e_in_to_e)s> ?uri } ",
+        "logical_form": "find find_reverse ent pred1 pred2",
+        "answer_template": [
+        "The pred2 whose pred1 is ent is ans",
+        "ans is the pred2 whose pred1 is ent"
+        ],
+        "negetive_forms": [402, 403],
+        "type": "vanilla"
+    },
+    {
+        "id": 305,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT ?uri WHERE { ?x <%(e_in_to_e_in_out)s> <%(e_in_out)s> . ?x <%(e_in_to_e)s> ?uri . ?uri rdf:type class} ",
+        "logical_form": "find filter_type find_reverse ent pred1 class pred2",
+        "negetive_forms": [105, 106],
+        "answer_template": [
+        "The pred2 of the type whose pred1 is ent is ans",
+        "The type with pred1 as ent has ans as pred2",
+        "ans is the pred2 of type whose pred1 is ent"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 6,
+        "n_entities": 1,
+        "template": "SELECT DISTINCT ?uri WHERE { ?x <%(e_out_to_e_out_out)s> <%(e_out_out)s> . ?uri <%(e_to_e_out)s> ?x } ",
+        "logical_form": "find_reverse find_reverse ent pred1 pred2",
+        "negetive_forms": [103, 105],
+        "answer_template": [
+        "ans has pred2's pred1 as ent",
+        "ans's pred2 has pred1 as ent"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 306,
+        "n_entities": 1,
+        "template": "SELECT DISTINCT ?uri WHERE { ?x <%(e_out_to_e_out_out)s> <%(e_out_out)s> . ?uri <%(e_to_e_out)s> ?x } . ?uri rdf:type class",
+        "logical_form": "filter_type find_reverse find_reverse ent pred1 pred2 class",
+        "negetive_forms": [403, 405],
+        "answer_template": [
+        "The type whose pred2's pred1 is ent is ans",
+        "ans is the type whose pred2's pred1 is ent"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 7,
+        "n_entities": 2,
+        "template": " SELECT DISTINCT ?uri WHERE { ?uri <%(e_to_e_out)s> <%(e_out_1)s> . ?uri <%(e_to_e_out)s> <%(e_out_2)s>} ",
+        "logical_form": "union find_reverse ent pred1 find_reverse ent pred1",
+        "negetive_forms": [106, 107],
+        "answer_template": [
+        "ans has pred1 as ent and ent",
+        "The pred1 of ent and ent has ans"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 307,
+        "n_entities": 2,
+        "template": " SELECT DISTINCT ?uri WHERE { ?uri <%(e_to_e_out)s> <%(e_out_1)s> . ?uri <%(e_to_e_out)s> <%(e_out_2)s>} ",
+        "logical_form": "union filter_type find_reverse ent pred1 find_reverse ent pred2 class",
+        "negetive_forms": [406, 407],
+        "answer_template": [
+        "The type whose pred1 are ent and ent are ans",
+        "ans is the type whose pred1 are ent and ent",
+        "The pred1 of ent and ent has the type ans"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 8,
+        "n_entities": 2,
+        "template": " SELECT DISTINCT ?uri WHERE {?uri <%(e_to_e_out_1)s> <%(e_out_1)s> . ?uri <%(e_to_e_out_2)s> <%(e_out_2)s> } ",
+        "logical_form": "intersection find_reverse ent pred1 find_reverse ent pred2 ",
+        "negetive_forms": [108, 111],
+        "answer_template": [
+        "ans has pred1 as ent and pred2 as ent",
+        "The pred1 of ent and pred2 of ent belongs to ans"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 308,
+        "n_entities": 2,
+        "template": " SELECT DISTINCT ?uri WHERE {?uri <%(e_to_e_out_1)s> <%(e_out_1)s> . ?uri <%(e_to_e_out_2)s> <%(e_out_2)s> . ?uri rdf:type class} ",
+        "logical_form": "intersection filter_type find_reverse ent pred1 class find_reverse ent pred2",
+        "negetive_forms": [408, 411],
+        "answer_template": [
+        "The type whose pred1 is ent and pred2 is ent is ans",
+        "ans, which is a type, has pred1 as ent and pred2 as ent",
+        "ans is the type whose pred1 is ent and pred2 is ent"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 9,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT ?uri WHERE { <%(e_in_in)s>  <%(e_in_in_to_e_in)s> ?x .  ?x <%(e_in_to_e)s> ?uri}",
+        "logical_form": "find find_reverse ent pred1 owner",
+        "negetive_forms": [103, 106],
+        "answer_template": [
+        "The pred1 of the soccer club and ent is ans"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 309,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT ?uri WHERE { <%(e_in_in)s>  <%(e_in_in_to_e_in)s> ?x .  ?x <%(e_in_to_e)s> . ?uri. ?x rdf:type class}",
+        "logical_form": "filter_type find find_reverse ent pred1 pred1 class",
+        "negetive_forms": [403, 406],
+        "answer_template": [
+        "The type who is the pred1 of the soccer club and ent is ans"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 311,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT ?uri WHERE { ?x <%(e_in_to_e_in_out)s> <%(e_in_out)s> . ?x <%(e_in_to_e)s> ?uri .?x rdf:type class}",
+        "logical_form":"find filter_type find_reverse ent pred1 class pred1",
+        "negetive_forms": [402, 403],
+        "answer_template": [
+        "The other pred1 of the type whose one pred1 is ent is ans",
+        "ans is the other pred1 of the type whose one other pred1 is ent"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 15,
+        "n_entities": 2,
+        "template": " SELECT DISTINCT ?uri WHERE { <%(e_in_1)s> <%(e_in_to_e)s> ?uri. <%(e_in_2)s> <%(e_in_to_e)s> ?uri} ",
+        "logical_form": "union find ent pred1 find ent pred1",
+        "negetive_forms": [107, 108],
+        "answer_template": [
+        "The pred1 of ent and ent is ans",
+        "ans is the pred1 of ent and ent"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 315,
+        "n_entities": 2,
+        "template": " SELECT DISTINCT ?uri WHERE { <%(e_in_1)s> <%(e_in_to_e)s> ?uri. <%(e_in_2)s> <%(e_in_to_e)s> ?uri} . ?uri rdf:type class",
+        "logical_form": "filter_type union find ent pred1 find ent pred1 class",
+        "negetive_forms": [407, 408],
+        "answer_template": [
+        "The type which is the pred1 of ent and ent is ans",
+        "ans is the type which is pred1 of ent and ent"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 16,
+        "n_entities": 2,
+        "template": " SELECT DISTINCT ?uri WHERE { <%(e_in_1)s> <%(e_in_to_e_1)s> ?uri. <%(e_in_2)s> <%(e_in_to_e_2)s> ?uri} ",
+        "logical_form": "intersection find ent pred1 find ent pred2",
+        "negetive_forms": [102, 106],
+        "answer_template": [
+        "The pred1 of ent and pred2 of ent is ans",
+        "ans is the pred1 of ent and pred2 of ent"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 316,
+        "n_entities": 2,
+        "template": " SELECT DISTINCT ?uri WHERE { <%(e_in_1)s> <%(e_in_to_e_1)s> ?uri. <%(e_in_2)s> <%(e_in_to_e_2)s> ?uri} . ?uri rdf:type class",
+        "logical_form": "filter_type intersection find ent pred1 find ent pred2 class",
+        "negetive_forms": [402, 406],
+        "answer_template": [
+        "The type which is the pred1 of ent and pred2 of ent is ans",
+        "ans is the type which is the pred1 of ent and pred2 of ent"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 101,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT COUNT(?uri) WHERE {?uri <%(e_to_e_out)s> <%(e_out)s> } ",
+        "logical_form": "count find_reverse ent pred1",
+        "negetive_forms": [1, 2],
+        "answer_template": [
+        "There are ans whose pred1 is ent",
+        "ans have pred1 as ent"
+        ],
+        "type": "count"
+    },
+    {
+        "id": 401,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT COUNT(?uri) WHERE {?uri <%(e_to_e_out)s> <%(e_out)s> . ?uri rdf:type class} ",
+        "logical_form": "filter_type count find_reverse ent pred1 class",
+        "negetive_forms": [301, 302],
+        "answer_template": [
+        "There are ans type whose pred1 is ent",
+        "The type s whose pred1 is ent are ans"
+        ],
+        "type": "count"
+    },
+    {
+        "id": 102,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT COUNT(?uri) WHERE { <%(e_in)s> <%(e_in_to_e)s> ?uri } ",
+        "logical_form": "count find ent pred1",
+        "negetive_forms": [1, 7],
+        "answer_template": [
+        "The number of pred1 in ent is ans",
+        "There are ans pred1 in ent"
+        ],
+        "type": "count"
+    },
+    {
+        "id": 402,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT COUNT(?uri) WHERE { <%(e_in)s> <%(e_in_to_e)s> ?uri } . ?uri rdf:type class",
+        "logical_form": "filter_type count find ent pred1 class",
+        "negetive_forms": [301, 307],
+        "answer_template": [
+        "The number of type which have pred1 in ent is ans",
+        "There are ans type s which have pred1 in ent"
+        ],
+        "type": "count"
+    },
+    {
+        "id": 103,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT COUNT(?uri) WHERE { <%(e_in_in)s> <%(e_in_in_to_e_in)s> ?x . ?x <%(e_in_to_e)s> ?uri } ",
+        "logical_form": "count find find ent pred1 pred2",
+        "negetive_forms": [3, 5],
+        "answer_template": [
+        "There are ans pred2 for the pred1 of ent",
+        "For the pred1 of ent, there are ans pred2 s"
+        ],
+        "type": "count"
+    },
+    {
+        "id": 403,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT COUNT(?uri) WHERE { <%(e_in_in)s> <%(e_in_in_to_e_in)s> ?x . ?x <%(e_in_to_e)s> ?uri } ",
+        "logical_form": "count find filter_type find ent pred1 class pred2",
+        "negetive_forms": [303, 305],
+        "answer_template": [
+        "There are ans pred2 of the type which is the pred1 of ent"
+        ],
+        "type": "count"
+    },
+    {
+        "id": 105,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT COUNT(?uri) WHERE { ?x <%(e_in_to_e_in_out)s> <%(e_in_out)s> . ?x <%(e_in_to_e)s> ?uri. ?x rdf:type class}",
+        "logical_form": "count find find_reverse ent pred1 pred2",
+        "negetive_forms": [7, 5],
+        "answer_template": [
+        "There are ans pred2 whose pred1 is ent",
+        "ans is the number of pred2 whose pred1 is ent"
+        ],
+        "type": "count"
+    },
+    {
+        "id": 405,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT COUNT(?uri) WHERE { ?x <%(e_in_to_e_in_out)s> <%(e_in_out)s> . ?x <%(e_in_to_e)s> ?uri } . ?uri rdf:type class",
+        "logical_form": "count filter_type find find_reverse ent pred1 pred2 class",
+        "answer_template": [
+        "There are ans type pred2 whose pred1 is ent",
+        "The number of type pred2 whose pred1 is ent are ans"
+        ],
+        "negetive_forms": [307, 305],
+        "type": "count"
+    },
+    {
+        "id": 106,
+        "n_entities": 1,
+        "template": "SELECT DISTINCT COUNT(?uri) WHERE { ?x <%(e_out_to_e_out_out)s> <%(e_out_out)s> . ?uri <%(e_to_e_out)s> ?x } ",
+        "logical_form": "count find_reverse find ent pred1 pred2",
+        "negetive_forms": [6, 8],
+        "answer_template": [
+        "There are ans whose pred2's pred1 is ent",
+        "ans have pred2's pred1 as ent"
+        ],
+        "type": "count"
+    },
+    {
+        "id": 406,
+        "n_entities": 1,
+        "template": "SELECT DISTINCT COUNT(?uri) WHERE { ?x <%(e_out_to_e_out_out)s> <%(e_out_out)s> . ?uri <%(e_to_e_out)s> ?x . ?uri rdf:type class} ",
+        "logical_form": "count filter_type find_reverse find_reverse ent pred1 pred2 class",
+        "negetive_forms": [306, 308],
+        "answer_template": [
+        "There are ans type whose pred2's pred1 is ent",
+        "ans is the number of type whose pred2's pred1 is ent"
+        ],
+        "type": "count"
+    },
+    {
+        "id": 107,
+        "n_entities": 2,
+        "template": " SELECT DISTINCT COUNT(?uri) WHERE { ?uri <%(e_to_e_out)s> <%(e_out_1)s> . ?uri <%(e_to_e_out)s> <%(e_out_2)s>} ",
+        "logical_form": "count union find_reverse ent pred1 find_reverse ent pred1",
+        "negetive_forms": [7, 9],
+        "answer_template": [
+        "There are ans whose pred1 are ent and ent",
+        "ans have pred1 as ent and ent"
+        ],
+        "type": "count"
+    },
+    {
+        "id": 407,
+        "n_entities": 2,
+        "template": " SELECT DISTINCT COUNT(?uri) WHERE { ?uri <%(e_to_e_out)s> <%(e_out_1)s> . ?uri <%(e_to_e_out)s> <%(e_out_2)s>} . ?uri rdf:type class ",
+        "logical_form": "count filter_type union find_reverse ent pred1 find_reverse ent pred1 class",
+        "negetive_forms": [307, 309],
+        "answer_template": [
+        "There are ans type whose pred1 are ent and ent",
+        "The type s whose pred1 are ent and ent are ans"
+        ],
+        "type": "count"
+    },
+    {
+        "id": 108,
+        "n_entities": 2,
+        "template": " SELECT DISTINCT COUNT(?uri) WHERE {?uri <%(e_to_e_out_1)s> <%(e_out_1)s> . ?uri <%(e_to_e_out_2)s> <%(e_out_2)s> } ",
+        "logical_form": "count intersection find_reverse ent pred1 find_reverse ent pred2",
+        "negetive_forms": [8, 15],
+        "answer_template": [
+        "There are ans whose pred1 is ent and pred2 is ent",
+        "The count, whose pred1 is ent and pred2 is ent, are ans"
+        ],
+        "type": "count"
+    },
+    {
+        "id": 408,
+        "n_entities": 2,
+        "template": " SELECT DISTINCT COUNT(?uri) WHERE {?uri <%(e_to_e_out_1)s> <%(e_out_1)s> . ?uri <%(e_to_e_out_2)s> <%(e_out_2)s> } . ?uri rdf:type class",
+        "logical_form": "count intersection find_reverse ent pred1 filter_type find_reverse ent pred2 class",
+        "negetive_forms": [308, 315],
+        "answer_template": [
+        "There are ans type whose pred1 is ent and pred2 is ent",
+        "ans type s are there whose pred1 is ent and pred2 is ent"
+        ],
+        "type": "count"
+    },
+    {
+        "id": 111,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT COUNT(?uri) WHERE { ?x <%(e_in_to_e_in_out)s> <%(e_in_out)s> . ?x <%(e_in_to_e)s> ?uri }",
+        "logical_form": "count find_reverse find_reverse ent pred1 pred1",
+        "negetive_forms": [11, 7],
+        "answer_template": [
+        "There are ans other pred1 whose one pred1 is ent",
+        "The number of other pred1 whoe one other pred1 is ent are ans"
+        ],
+        "type": "count"
+    },
+    {
+        "id": 411,
+        "n_entities": 1,
+        "template": " SELECT DISTINCT COUNT(?uri) WHERE { ?x <%(e_in_to_e_in_out)s> <%(e_in_out)s> . ?x <%(e_in_to_e)s>. ?uri . ?x rdf:type class}",
+        "logical_form": "count filter_type find_reverse find_reverse ent pred1 pred1 class",
+        "negetive_forms": [311, 307],
+        "answer_template": [
+        "There are ans other pred1 whose one pred1 is ent"
+        ],
+        "type": "count"
+    },
+    {
+        "id": 151,
+        "n_entities": 1,
+        "template": "ASK WHERE { <%(uri)s> <%(e_to_e_out)s> <%(e_out)s> }",
+        "logical_form": "is ent pred1 ent",
+        "negetive_forms": [152, 1],
+        "answer_template": [
+        "ans, ent is the pred1 of ent",
+        "ans, ent has pred1 as ent"
+        ],
+        "type": "ask"
+    },
+    {
+        "id": 152,
+        "n_entities": 1,
+        "template": "ASK WHERE { <%(e_in)s> <%(e_in_to_e)s> <%(uri)s> }",
+        "logical_form": "is ent pred1 ent",
+        "negetive_forms": [151, 2],
+        "answer_template": [
+        "ans, ent pred1 of ent",
+        "ans, ent has pred1 as ent"
+        ],
+        "type": "ask"
+    },
+    {
+        "id": 11,
+        "n_entities": 1,
+        "template": "ASK WHERE { <%(e_in)s> <%(e_in_to_e)s> <%(uri)s> }",
+        "logical_form": "find find_reverse ent pred1 pred1",
+        "negetive_forms": [111, 3],
+        "answer_template": [
+        "ans is the other pred1 whose one pred1 is ent",
+        "The other pred1 whose one other pred1 is ent is ans"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 605,
+        "n_entities": 1,
+        "template": "ASK WHERE { <%(e_in)s> <%(e_in_to_e)s> <%(uri)s> }",
+        "logical_form": "find filter_type find_reverse ent pred1 class pred2",
+        "negetive_forms": [405, 407],
+        "answer_template": [
+        "The pred2 of the type whose pred1 is ent is ans",
+        "ans is the pred2 of type whose pred1 is ent"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 906,
+        "n_entities": 1,
+        "template": "ASK WHERE { <%(e_in)s> <%(e_in_to_e)s> <%(uri)s> }",
+        "logical_form": "filter_type find_reverse find_reverse ent pred1 pred2 class",
+        "negetive_forms": [411, 403],
+        "answer_template": [
+        "The type whose pred2's pred1 is ent is ans",
+        "ans is the type whose pred2's pred1 is ent"
+        ],
+        "type": "vanilla"
+    },
+    {
+        "id": 601,
+        "n_entities": 1,
+        "template": "ASK WHERE { <%(e_in)s> <%(e_in_to_e)s> <%(uri)s> }",
+        "logical_form": "filter_type find_reverse ent pred1 class",
+        "negetive_forms": [1, 2],
+        "answer_template": [
+        "The type whose pred1 is ent is ans",
+        "ans is the type whose pred1 is ent"
+        ],
+        "type": "vanilla"
+    }
+]
