@@ -61,4 +61,26 @@ Please consider the [args](args.py) file for specifying the desired checkpoint p
 The repository is under [MIT License](LICENCE).
 
 ## Cite
-Coming Soon!
+```bash
+@InProceedings{
+    10.1007/978-3-030-86523-8_34,
+    author="Kacupaj, Endri
+    and Premnadh, Shyamnath
+    and Singh, Kuldeep
+    and Lehmann, Jens
+    and Maleshkova, Maria",
+    editor="Oliver, Nuria
+    and P{\'e}rez-Cruz, Fernando
+    and Kramer, Stefan
+    and Read, Jesse
+    and Lozano, Jose A.",
+    title="VOGUE: Answer Verbalization Through Multi-Task Learning",
+    booktitle="Machine Learning and Knowledge Discovery in Databases. Research Track",
+    year="2021",
+    publisher="Springer International Publishing",
+    address="Cham",
+    pages="563--579",
+    abstract="In recent years, there have been significant developments in Question Answering over Knowledge Graphs (KGQA). Despite all the notable advancements, current KGQA systems only focus on answer generation techniques and not on answer verbalization. However, in real-world scenarios (e.g., voice assistants such as Alexa, Siri, etc.), users prefer verbalized answers instead of a generated response. This paper addresses the task of answer verbalization for (complex) question answering over knowledge graphs. In this context, we propose a multi-task-based answer verbalization framework: VOGUE (Verbalization thrOuGh mUlti-task lEarning). The VOGUE framework attempts to generate a verbalized answer using a hybrid approach through a multi-task learning paradigm. Our framework can generate results based on using questions and queries as inputs concurrently. VOGUE comprises four modules that are trained simultaneously through multi-task learning. We evaluate our framework on existing datasets for answer verbalization, and it outperforms all current baselines on both BLEU and METEOR scores.",
+    isbn="978-3-030-86523-8"
+}
+```
